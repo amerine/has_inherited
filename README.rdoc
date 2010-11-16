@@ -1,6 +1,6 @@
 = has_inherited
 
-Description goes here.
+Easily share variables between Rails models with inheritance.
 
 == Note on Patches/Pull Requests
  
