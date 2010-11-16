@@ -12,13 +12,15 @@ end
 
 class Client < ActiveRecord::Base
   belongs_to :industry
-  has_inheritable :seo, :from => :industry 
+  has_inheritable :seo, :from => [:industry, :seo], :inherit_class => 'Seo'
+
 end
 
 describe "HasInherited" do
 
   before do
     ActiveRecord::Base.logger = Logger.new('test.log')
+    ActiveRecord::Base.logger.level = Logger::DEBUG
     ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
     ActiveRecord::Schema.suppress_messages do
       ActiveRecord::Schema.define(:version => 1) do
@@ -66,5 +68,14 @@ describe "HasInherited" do
     Seo.global.title = "Title"
     industry = Industry.create
     industry.seo.title.should.equal "Title"
+  end
+
+  it "should work with three levels of nesting" do
+    Seo.global.title = "SEO Title"
+    industry = Industry.create
+    client = industry.clients.create
+    client.seo.title.should.equal "SEO Title"
+    #client.seo.title = "Client Title"
+    #client.seo.title.should.equal "Client Title"
   end
 end
