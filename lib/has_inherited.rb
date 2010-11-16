@@ -26,7 +26,7 @@ module HasInheritable
       options = opts.extract_options!
       attr = opts.shift || 'inheritable'
       assoc = "_#{attr}"
-      class_name = options[:from] === Array ? options[:from].first.to_s : options[:from].to_s
+      class_name = options[:from].kind_of?(Array) ? options[:from].first.to_s : options[:from].to_s
 
       has_many assoc.to_sym, :class_name => class_name, :as => :inheritable, :dependent => :destroy
 
