@@ -12,8 +12,13 @@ end
 
 class Client < ActiveRecord::Base
   belongs_to :industry
+  has_many :stores
   has_inheritable :seo, :from => [:industry, :seo], :inherit_class => 'Seo'
+end
 
+class Store < ActiveRecord::Base
+  belongs_to :client
+  has_inheritable :seo, :from => [:client, :seo], :inherit_class => 'Seo'
 end
 
 describe "HasInherited" do
@@ -40,6 +45,12 @@ describe "HasInherited" do
         create_table :clients do |t|
           t.name :string
           t.references :industry
+          t.timestamps
+        end
+
+        create_table :stores do |t|
+          t.name :string
+          t.references :client
           t.timestamps
         end
 
@@ -70,12 +81,41 @@ describe "HasInherited" do
     industry.seo.title.should.equal "Title"
   end
 
+  it "should work with two levels of nesting" do
+    Seo.global.title = "SEO Title"
+    industry = Industry.create
+    client = industry.clients.create
+    client.seo.title.should.equal 'SEO Title'
+  end
+
   it "should work with three levels of nesting" do
     Seo.global.title = "SEO Title"
     industry = Industry.create
     client = industry.clients.create
     client.seo.title.should.equal "SEO Title"
-    #client.seo.title = "Client Title"
-    #client.seo.title.should.equal "Client Title"
+    client.seo.title = "Client Title"
+    client.seo.title.should.equal "Client Title"
+  end
+
+  it "Should allow you to see all the custom values" do
+    Seo.global.title = "SEO Title"
+    Seo.global.keywords = "Awesome, Words, Are, Awesome"
+    Seo.global.luke = "Luke"
+    industry = Industry.create
+    industry.seo.luke = "Luke 2"
+    industry.seo.luke = nil
+    client = industry.clients.create
+    client.seo.title = "Client Title"
+    client.seo.keywords = "Awesome"
+    client.seo.all.size.should.equal 2
+    client.seo.luke.should.equal 'Luke'
+  end
+
+  it "should work with four levels of nesting" do
+    Seo.global.title = "SEO Title"
+    industry = Industry.create
+    client = industry.clients.create
+    store = client.stores.create
+    store.seo.title.should.equal "SEO Title"
   end
 end

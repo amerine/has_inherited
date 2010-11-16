@@ -85,6 +85,12 @@ module HasInheritable
       end
     end
 
+    def all
+      all_values = {}
+      @assoc.all.each {|inherited| all_values[inherited.name.to_sym] = inherited.value}
+      all_values
+    end
+
     private 
 
     def parent
