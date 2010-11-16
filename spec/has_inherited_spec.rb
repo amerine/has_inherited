@@ -2,11 +2,17 @@ require 'spec_helper'
 
 
 class Seo < ActiveRecord::Base
-  is_inheritable :global
+  is_inheritable
 end
 
 class Industry < ActiveRecord::Base
   has_inheritable :seo, :from => Seo
+  has_many :clients
+end
+
+class Client < ActiveRecord::Base
+  belongs_to :industry
+  has_inheritable :seo, :from => :industry 
 end
 
 describe "HasInherited" do
@@ -23,6 +29,18 @@ describe "HasInherited" do
           t.string  :value
           t.string  :value_type
         end
+
+        create_table :industries do |t|
+          t.name :string
+          t.timestamps
+        end
+
+        create_table :clients do |t|
+          t.name :string
+          t.references :industry
+          t.timestamps
+        end
+
       end
     end
   end
@@ -42,5 +60,11 @@ describe "HasInherited" do
   it "has the ability to set global variables" do
     Seo.global.title = "Title"
     Seo.global.title.should.equal "Title"
+  end
+
+  it "should be able to set variables" do
+    Seo.global.title = "Title"
+    industry = Industry.create
+    industry.seo.title.should.equal "Title"
   end
 end

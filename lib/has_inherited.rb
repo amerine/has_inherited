@@ -20,6 +20,20 @@ module HasInheritable
       belongs_to :inheritable, :polymorphic => true
       include HasInheritable::InstanceMethods
     end
+
+
+    def has_inheritable(*opts)
+      options = opts.extract_options!
+      attr = opts.shift || 'inheritable'
+      assoc = "_#{attr}"
+      class_name = options[:from] === Array ? options[:from].first.to_s : options[:from].to_s
+
+      has_many assoc.to_sym, :class_name => class_name, :as => :inheritable, :dependent => :destroy
+
+      define_method attr do
+        instance_variable_get(:"@#{attr.to_s}") || instance_variable_set(:"@#{attr.to_s}", InheritAccessor.new(self, assoc.to_sym, options[:from]))
+      end
+    end
   end # ClassMethods
 
   class InheritAccessor
@@ -29,7 +43,7 @@ module HasInheritable
     def initialize(owner, assoc, heritage)
       @owner = owner
       @assoc = @owner.send(assoc)
-      if heritage === Array
+      if heritage.kind_of? Array
         @parent = heritage.first
         @parent_accessor = heritage.second
       else
@@ -37,7 +51,7 @@ module HasInheritable
       end
 
       if @parent && @parent_accessor.nil?
-        if @parent ===  Class
+        if @parent.kind_of? Class
           @parent_accessor = :global
         else
           @parent_accessor = :inheritable
@@ -76,6 +90,7 @@ module HasInheritable
 
   def parent
     if has_parent?
+      puts "In has parent?"
       parent = @parent.is_a?(Class) ? @parent : @owner.__send__(@parent)
       parent.__send__(@parent_accessor)
     else
