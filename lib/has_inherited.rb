@@ -69,7 +69,6 @@ module HasInheritable
 
     def []=(attribute, value)
       attr = find_attr(attribute)
-      attr.delete if value.nil? && attr
       if value.nil?
         attr.delete if attribute
       else
@@ -122,7 +121,28 @@ module HasInheritable
 
   module InstanceMethods
     def value
-      self[:value]
+      case self[:value_type]
+      when 'String'
+        self[:value]
+      when  'Fixnum', 'Bignum'
+        Integer(self[:value])
+      when 'Float'
+        Float(self[:value])
+      when 'Symbol'
+        self[:value].to_sym
+      when 'TrueClass'
+        true
+      when 'FalseClass'
+        false
+      when 'Time'
+        Time.parse(self[:value])
+      when 'Date'
+        Date.parse(self[:value])
+      when 'DateTime'
+        DateTime.parse(self[:value])
+      else
+        self[:value]
+      end
     end
 
     def value=(new_value)
@@ -130,6 +150,14 @@ module HasInheritable
         self[:value] = self.value_type = nil
       else
         new_type = new_value.class.to_s
+        case new_type
+        when 'Symbol'
+          new_value = new_value.to_s
+        when 'Fixnum', 'Float', 'Bignum', 'TrueClass', 'FalseClass'
+          new_value = new_value.to_s
+        when 'Time', 'Date', 'DateTime'
+          new_value = new_value.to_s(:rfc822)
+        end
         self[:value] = new_value
         self.value_type = new_type
       end

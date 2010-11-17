@@ -118,4 +118,58 @@ describe "HasInherited" do
     store = client.stores.create
     store.seo.title.should.equal "SEO Title"
   end
+
+  it "should store and retrieve Strings" do
+    Seo.global.title = "Title"
+    Seo.global.title.class.should.equal String
+  end
+
+  it "should store and retrieve Fixnums" do
+    Seo.global.number = 42
+    Seo.global.number.class.should.equal Fixnum
+  end
+
+  it "should store and retrieve Bignums" do
+    Seo.global.number = 123456789101112131415161718123
+    Seo.global.number.class.should.equal Bignum
+    Seo.global.number.should.equal 123456789101112131415161718123
+  end
+
+  it "should store and retrieve Floats" do
+    Seo.global.float = 1.2345678910
+    Seo.global.float.class.should.equal Float
+    Seo.global.float.should.equal 1.2345678910
+  end
+
+  it "should store and retrieve Symbols" do
+    Seo.global.symbol = :symbol
+    Seo.global.symbol.class.should.equal Symbol
+    Seo.global.symbol.should.equal :symbol
+  end
+
+  it "should store and retrieve True" do
+    Seo.global.true = true
+    Seo.global.true.class.should.equal TrueClass
+    Seo.global.true.should.equal true
+  end
+
+  it "should store and retrieve False" do
+    Seo.global.false = false
+    Seo.global.false.class.should.equal FalseClass
+    Seo.global.false.should.equal false
+  end
+
+  it "should store and retrieve Time" do
+    time = Time.now
+    Seo.global.time = time
+    Seo.global.time.class.should.equal Time
+    Seo.global.time.to_s.should.equal time.to_s
+  end
+
+  it "should store and retrieve Dates" do
+    date = Date.today
+    Seo.global.date = date
+    Seo.global.date.class.should.equal Date
+    Seo.global.date.should.equal date
+  end
 end
