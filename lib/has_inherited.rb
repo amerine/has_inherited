@@ -1,4 +1,4 @@
-module HasInheritable
+module HasInherited
   def self.included(base)
     base.extend ClassMethods
   end # self.included
@@ -18,10 +18,10 @@ module HasInheritable
       end
 
       belongs_to :inheritable, :polymorphic => true
-      include HasInheritable::InstanceMethods
+      include HasInherited::InstanceMethods
     end
 
-    def has_inheritable(*opts)
+    def has_inherited(*opts)
       options = opts.extract_options!
       attr = opts.shift || 'inheritable'
       assoc = "_#{attr}"
@@ -174,4 +174,4 @@ module HasInheritable
   end
 end
 
-ActiveRecord::Base.send(:include, HasInheritable)
+ActiveRecord::Base.send(:include, HasInherited)

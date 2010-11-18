@@ -2,6 +2,76 @@
 
 Easily share variables between Rails models with inheritance.
 
+== Installation
+
+  ➜  ~  gem install has_inherited
+
+== Using has_inheritable
+
+The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects.
+
+=== 1. Define a parent object
+
+  class Seo < ActiveRecord::Base
+    is_inheritable
+  end
+
+Use the following as a migration guideline. *Note:* The table structure is important.
+
+  create_table :seos do |t|
+    t.integer :inheritable_id
+    t.string  :inheritable_type
+    t.string  :name, :limit => 50, :null => false
+    t.string  :value
+    t.string  :value_type
+  end
+
+=== 2. Define child objects. 
+
+  class Industry < ActiveRecord::Base
+    has_inherited :seo, :from => Seo
+    has_many :clients
+  end
+
+This gives industry instances access to the seo namespace from the Seo object. In this case it will end up being `industry.seo.X`
+
+  class Client < ActiveRecord::Base
+    belongs_to :industry
+    has_many :stores
+    has_inherited :seo, :from => [:industry, :seo], :inherit_class => 'Seo'
+  end
+
+This gives client instances access to the seo namespace from its associated industry. You also have to specify the `:inherit_class` so we know what table to look up. 
+
+=== Examples
+
+  #Set the SEO global title
+  #Seo.global.title = "SEO Title"
+
+  #Grab that child industry title
+  industry.seo.title
+  # => 'SEO Title'
+
+  #Grab the client title
+  client.seo.title
+  # => 'SEO Title'
+
+  #Change the industry title
+  industry.seo.title = 'Industry Title'
+
+  #Check the client
+  client.seo.title
+  # => 'Industry Title'
+
+  #Grab all the Keys for the client
+  client.seo.all
+  # => {:title=>"Industry Title"}
+
+  #Grab all the non-inherited keys from the client
+  client.seo.all(false)
+  # => {}
+
+
 == Note on Patches/Pull Requests
  
 * Fork the project.

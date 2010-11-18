@@ -6,19 +6,19 @@ class Seo < ActiveRecord::Base
 end
 
 class Industry < ActiveRecord::Base
-  has_inheritable :seo, :from => Seo
+  has_inherited :seo, :from => Seo
   has_many :clients
 end
 
 class Client < ActiveRecord::Base
   belongs_to :industry
   has_many :stores
-  has_inheritable :seo, :from => [:industry, :seo], :inherit_class => 'Seo'
+  has_inherited :seo, :from => [:industry, :seo], :inherit_class => 'Seo'
 end
 
 class Store < ActiveRecord::Base
   belongs_to :client
-  has_inheritable :seo, :from => [:client, :seo], :inherit_class => 'Seo'
+  has_inherited :seo, :from => [:client, :seo], :inherit_class => 'Seo'
 end
 
 describe "HasInherited" do
@@ -108,6 +108,7 @@ describe "HasInherited" do
     client.seo.title = "Client Title"
     client.seo.keywords = "Awesome"
     client.seo.all.size.should.equal 3
+    puts client.seo.all.inspect
     client.seo.luke.should.equal 'Luke'
   end
 
