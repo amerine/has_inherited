@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "has_inherited"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = "Easily share variables between Rails models with inheritance."
+    gem.description = "The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects."
     gem.email = "mark@amerine.net"
     gem.homepage = "http://github.com/amerine/has_inherited"
     gem.authors = ["Mark Turner"]
