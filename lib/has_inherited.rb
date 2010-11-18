@@ -84,9 +84,17 @@ module HasInheritable
       end
     end
 
-    def all
+    def all(inherited = true)
       all_values = {}
       @assoc.all.each {|inherited| all_values[inherited.name.to_sym] = inherited.value}
+      if inherited
+        parent_proxy = parent
+        while parent_proxy
+          parent_proxy_hash = parent_proxy.__send__(:all, false)
+          all_values.reverse_merge! parent_proxy_hash
+          parent_proxy = parent_proxy.__send__(:parent)
+        end
+      end
       all_values
     end
 
