@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'logger'
 
 
 class Seo < ActiveRecord::Base
@@ -38,18 +39,18 @@ describe "HasInherited" do
         end
 
         create_table :industries do |t|
-          t.name :string
+          t.string :name
           t.timestamps
         end
 
         create_table :clients do |t|
-          t.name :string
+          t.string :name
           t.references :industry
           t.timestamps
         end
 
         create_table :stores do |t|
-          t.name :string
+          t.string :name
           t.references :client
           t.timestamps
         end

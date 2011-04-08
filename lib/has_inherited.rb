@@ -8,7 +8,7 @@ module HasInherited
       attr = name.shift || :global
       assoc = "_#{attr}"
         
-      named_scope assoc.to_sym,
+      scope assoc.to_sym,
           :conditions => 'inheritable_id IS NULL AND inheritable_type IS NULL'
 
       (class << self; self; end).instance_eval do
@@ -30,7 +30,7 @@ module HasInherited
       has_many assoc.to_sym, :class_name => class_name, :as => :inheritable, :dependent => :destroy
 
       define_method attr do
-      instance_variable_get(:"@#{attr.to_s}") || instance_variable_set(:"@#{attr.to_s}", InheritAccessor.new(self, assoc.to_sym, options[:from]))
+        instance_variable_get(:"@#{attr.to_s}") || instance_variable_set(:"@#{attr.to_s}", InheritAccessor.new(self, assoc.to_sym, options[:from]))
       end
     end
   end # ClassMethods
@@ -86,7 +86,7 @@ module HasInherited
 
     def all(inherited = true)
       all_values = {}
-      @assoc.all.each {|inherited| all_values[inherited.name.to_sym] = inherited.value}
+      @assoc.all.each {|ina| all_values[ina.name.to_sym] = ina.value}
       if inherited
         parent_proxy = parent
         while parent_proxy
