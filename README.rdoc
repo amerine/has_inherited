@@ -8,6 +8,7 @@ Easily share variables between Rails models with inheritance.
 
 == Using has_inheritable
 
+(*NOTE*: has_inherited 2.x or greater only works with Rails 3. If you need Rails 2.x support please use has_inherited 1.0)
 The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects.
 
 === 1. Define a parent object
