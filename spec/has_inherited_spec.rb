@@ -82,6 +82,12 @@ describe "HasInherited" do
     industry.seo.title.should.equal "Title"
   end
 
+  it "should be able to grab all the global values" do
+    Seo.global.title = "Global Title"
+    Seo.global.foo   = "Global Foo"
+    Seo.global.all.size.should.equal 2
+  end
+
   it "should work with two levels of nesting" do
     Seo.global.title = "SEO Title"
     industry = Industry.create
