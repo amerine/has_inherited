@@ -9,7 +9,7 @@ begin
     gem.description = "The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects."
     gem.email = "mark@amerine.net"
     gem.homepage = "http://github.com/amerine/has_inherited"
-    gem.authors = ["Mark Turner"]
+    gem.authors = ["Mark Turner", "Steve Burkett"]
     gem.add_development_dependency "bacon", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
