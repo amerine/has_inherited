@@ -7,7 +7,7 @@ module HasInherited
     def is_inheritable(*name)
       attr = name.shift || :global
       assoc = "_#{attr}"
-        
+
       scope assoc.to_sym,
           :conditions => 'inheritable_id IS NULL AND inheritable_type IS NULL'
 
@@ -36,8 +36,7 @@ module HasInherited
   end # ClassMethods
 
   class InheritAccessor
-    # In 1.9 I would use a BasicObject here. A conditional check wouldn't hurt.
-    instance_methods.each {|m| undef_method m unless m.to_s =~ /(^__|send|inject)/}
+    instance_methods.each {|m| undef_method m unless m.to_s =~ /(^__|send|inject|object_id)/}
 
     def initialize(owner, assoc, heritage)
       @owner = owner
