@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{has_inherited}
-  s.version = "2.0.0"
+  s.version = "2.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mark Turner", "Steve Burkett"]
-  s.date = %q{2011-05-02}
+  s.date = %q{2011-07-01}
   s.description = %q{The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects.}
   s.email = %q{mark@amerine.net}
   s.extra_rdoc_files = [
