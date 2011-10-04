@@ -104,6 +104,23 @@ describe "HasInherited" do
     client.seo.title.should.equal "Client Title"
   end
 
+  it "should be inquireable" do
+    industry = Industry.create
+    client = industry.clients.create
+    client.seo.value = "Some Value"
+    client.seo.value = "Some Value"
+    client.seo.value?.should.equal true
+    client.seo.bad_value?.should.equal false
+  end
+
+  it "should be inquireable through inheritance " do
+    industry = Industry.create
+    industry.seo.custom_value = "Custom Value"
+    client = industry.clients.create
+    client.seo.custom_value?.should.equal true
+    client.seo.bad_value?.should.equal false
+  end
+
   it "Should allow you to see all the custom values" do
     Seo.global.title = "SEO Title"
     Seo.global.keywords = "Awesome, Words, Are, Awesome"

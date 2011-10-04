@@ -120,6 +120,8 @@ module HasInherited
       name = symbol.to_s
       if name =~ /=$/
         self[name.gsub(/=$/, '')] = args.first
+      elsif name =~ /\?$/
+        !!self[name.gsub /\?$/, '']
       else
         self[name]
       end
