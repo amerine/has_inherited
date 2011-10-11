@@ -11,6 +11,8 @@ begin
     gem.homepage = "http://github.com/amerine/has_inherited"
     gem.authors = ["Mark Turner", "Steve Burkett"]
     gem.add_development_dependency "bacon", ">= 0"
+    gem.add_development_dependency "sqlite3", ">= 0"
+    gem.add_development_dependency "jeweler", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

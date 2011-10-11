@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Mark Turner}, %q{Steve Burkett}]
-  s.date = %q{2011-10-04}
+  s.date = %q{2011-10-11}
   s.description = %q{The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects.}
   s.email = %q{mark@amerine.net}
   s.extra_rdoc_files = [
@@ -38,24 +38,21 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<bacon>, ["~> 1.1.0"])
       s.add_runtime_dependency(%q<activerecord>, [">= 0"])
-      s.add_runtime_dependency(%q<sqlite3>, [">= 0"])
       s.add_development_dependency(%q<bacon>, [">= 0"])
+      s.add_development_dependency(%q<sqlite3>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
-      s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<bacon>, ["~> 1.1.0"])
       s.add_dependency(%q<activerecord>, [">= 0"])
-      s.add_dependency(%q<sqlite3>, [">= 0"])
       s.add_dependency(%q<bacon>, [">= 0"])
+      s.add_dependency(%q<sqlite3>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
-    s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<bacon>, ["~> 1.1.0"])
     s.add_dependency(%q<activerecord>, [">= 0"])
-    s.add_dependency(%q<sqlite3>, [">= 0"])
     s.add_dependency(%q<bacon>, [">= 0"])
+    s.add_dependency(%q<sqlite3>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 
