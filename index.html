@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>has_inherited by amerine</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>has_inherited</h1>
+        <p>Easily share variables between Rails models with inheritance.</p>
+        <p class="view"><a href="https://github.com/amerine/has_inherited">View the Project on GitHub <small>amerine/has_inherited</small></a></p>
+        <ul>
+          <li><a href="https://github.com/amerine/has_inherited/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/amerine/has_inherited/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/amerine/has_inherited">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>has_inherited</h2>
+
+<p>Easily share variables between Rails models with inheritance.</p>
+
+<h3>Installation</h3>
+
+<p><code>➜  ~  gem install has_inherited</code></p>
+
+<h3>Using has_inheritable</h3>
+
+<p>(<em>NOTE</em>: has_inherited 2.x or greater only works with Rails 3. If you need Rails 2.x support please use has_inherited 1.0)
+The intention of this library is to make it easy to inherit particular variables between models in rails apps. We start with a parent model that will function as a pseudo-polymorphic association for children objects.</p>
+
+<h3>1. Define a parent object</h3>
+
+<pre><code>class Seo &lt; ActiveRecord::Base
+  is_inheritable
+end
+</code></pre>
+
+<p>Use the following as a migration guideline. <em>Note:</em> The table structure is important.</p>
+
+<pre><code>create_table :seos do |t|
+  t.integer :inheritable_id
+  t.string  :inheritable_type
+  t.string  :name, :limit =&gt; 50, :null =&gt; false
+  t.string  :value
+  t.string  :value_type
+end
+</code></pre>
+
+<h3>2. Define child objects.</h3>
+
+<pre><code>class Industry &lt; ActiveRecord::Base
+  has_inherited :seo, :from =&gt; Seo
+  has_many :clients
+end
+</code></pre>
+
+<p>This gives industry instances access to the seo namespace from the Seo object. In this case it will end up being <code>industry.seo.X</code></p>
+
+<pre><code>class Client &lt; ActiveRecord::Base
+  belongs_to :industry
+  has_many :stores
+  has_inherited :seo, :from =&gt; [:industry, :seo], :inherit_class =&gt; 'Seo'
+end
+</code></pre>
+
+<p>This gives client instances access to the seo namespace from its associated industry. You also have to specify the <code>:inherit_class</code> so we know what table to look up. </p>
+
+<h3>Examples</h3>
+
+<pre><code>#Set the SEO global title
+#Seo.global.title = "SEO Title"
+
+#Grab that child industry title
+industry.seo.title
+# =&gt; 'SEO Title'
+
+#Grab the client title
+client.seo.title
+# =&gt; 'SEO Title'
+
+#Change the industry title
+industry.seo.title = 'Industry Title'
+
+#Check the client
+client.seo.title
+# =&gt; 'Industry Title'
+
+#Grab all the Keys for the client
+client.seo.all
+# =&gt; {:title=&gt;"Industry Title"}
+
+#Grab all the non-inherited keys from the client
+client.seo.all(false)
+# =&gt; {}
+</code></pre>
+
+<h3>Note on Patches/Pull Requests</h3>
+
+<ul>
+<li>Fork the project.</li>
+<li>Make your feature addition or bug fix.</li>
+<li>Add tests for it. This is important so I don't break it in a
+future version unintentionally.</li>
+<li>Commit, do not mess with rakefile, version, or history.
+(if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)</li>
+<li>Send me a pull request. Bonus points for topic branches.</li>
+</ul><h3>Copyright</h3>
+
+<p>Copyright (c) 2010 Mark Turner. See LICENSE for details.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/amerine">amerine</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
